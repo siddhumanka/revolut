@@ -1,4 +1,4 @@
-package com.revolut.customers.controllers
+package com.revolut.customer.controllers
 
 import com.revolut.customer.Main
 import io.dropwizard.client.JerseyClientBuilder
