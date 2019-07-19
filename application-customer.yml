@@ -1,0 +1,14 @@
+server:
+  registerDefaultExceptionMappers: false
+  applicationConnectors:
+    - type: http
+      port: 9000
+  adminConnectors:
+    - type: http
+      port: 9001
+
+logging:
+  level: INFO
+  loggers:
+#      "io.dropwizard.jersey.jackson": INFO
+      "com.revolut": INFO

@@ -2,12 +2,21 @@ group 'com.revolut'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
-targetCompatibility = 1.8
+
+mainClassName = "com.revolut.customer.Main"
+
+project.ext { configPath = "$rootProject.projectDir/" }
 
 repositories {
     mavenCentral()
+}
+
+
+run {
+    args 'server', configPath + 'application.yml'
 }
 
 dependencies {

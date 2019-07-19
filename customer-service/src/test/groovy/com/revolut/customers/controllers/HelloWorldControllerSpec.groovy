@@ -1,5 +1,6 @@
-package com.revolut
+package com.revolut.customers.controllers
 
+import com.revolut.customer.Main
 import io.dropwizard.client.JerseyClientBuilder
 import io.dropwizard.client.JerseyClientConfiguration
 import io.dropwizard.testing.junit.DropwizardAppRule
@@ -13,7 +14,7 @@ import javax.ws.rs.client.WebTarget
 import static java.util.UUID.randomUUID
 import static javax.ws.rs.core.Response.Status.OK
 
-class HelloWorldSpec extends Specification {
+class HelloWorldControllerSpec extends Specification {
 
     @Shared
     @ClassRule
@@ -42,3 +43,4 @@ class HelloWorldSpec extends Specification {
         responseString == "helloWorld"
     }
 }
+

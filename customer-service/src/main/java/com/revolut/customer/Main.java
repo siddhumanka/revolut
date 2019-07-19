@@ -1,6 +1,7 @@
-package com.revolut;
+package com.revolut.customer;
 
-import com.revolut.controllers.HelloWorldController;
+
+import com.revolut.customer.controllers.HelloWorldController;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;

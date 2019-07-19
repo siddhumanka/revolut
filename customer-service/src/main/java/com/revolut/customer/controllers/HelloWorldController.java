@@ -1,4 +1,4 @@
-package com.revolut.controllers;
+package com.revolut.customer.controllers;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
