@@ -33,18 +33,18 @@ class CustomerControllerSpec extends Specification {
 
     static WebTarget createTarget(DropwizardAppRule rule, JerseyClientConfiguration clientConfig, Class<?>... providerClasses) {
         def builder = new JerseyClientBuilder(rule.getEnvironment()).using(clientConfig)
-        providerClasses.each { builder.withProvider(it)}
+        providerClasses.each { builder.withProvider(it) }
 
         def client = builder.build(randomUUID().toString())
         return client.target("http://localhost:${rule.localPort}")
     }
 
-    def setupSpec() {
+    def setup() {
         target = createTarget(rule)
     }
 
 
-    def "POST /customer should add a new customer to bank"() {
+    def "POST /account should add a new customer to bank"() {
         given: "A customer details"
 
         def firstName = "Bat"
@@ -52,55 +52,43 @@ class CustomerControllerSpec extends Specification {
         def username = "batman"
 
         when: "Posting customer details"
-        def response = target.path("/customer")
+        def response = target.path("/account")
                 .request(APPLICATION_JSON_TYPE)
-                .post(entity("""{
-                        "firstName" : "${firstName}", 
-                        "lastName": "${lastName}", 
-                        "username": "${username}"
-                 }""", APPLICATION_JSON_TYPE))
+                .post(entity([firstName: firstName, lastName: lastName, username: username], APPLICATION_JSON_TYPE))
 
         then: "should return a unique account number"
-        def responseJson = response.readEntity(Map)
+        def responseJson = response.readEntity(Integer)
 
         response.status == OK.statusCode
-        responseJson.accountNumber != null
+        responseJson != null
     }
 
-    def "POST /customer should return different account number for different customer"() {
+    def "POST /account should return different account number for different customer"() {
         given: "A customer details"
 
-        def firstName1 = "Bat"
-        def lastName1 = "man"
-        def username1 = "batman"
+        def firstName1 = "wonder"
+        def lastName1 = "woman"
+        def username1 = "wonderwoman"
 
         def firstName2 = "super"
         def lastName2 = "man"
         def username2 = "superman"
 
         when: "Posting 2 customer details"
-        def response1 = target.path("/customer")
+        def response1 = target.path("/account")
                 .request(APPLICATION_JSON_TYPE)
-                .post(entity("""{
-                        "firstName" : "${firstName1}", 
-                        "lastName": "${lastName1}", 
-                        "username": "${username1}"
-                 }""", APPLICATION_JSON_TYPE))
+                .post(entity([firstName: firstName1, lastName: lastName1, username: username1], APPLICATION_JSON_TYPE))
 
-        def response2 = target.path("/customer")
+        def response2 = target.path("/account")
                 .request(APPLICATION_JSON_TYPE)
-                .post(entity("""{
-                        "firstName" : "${firstName2}", 
-                        "lastName": "${lastName2}", 
-                        "username": "${username2}"
-                 }""", APPLICATION_JSON_TYPE))
+                .post(entity([firstName: firstName2, lastName: lastName2, username: username2], APPLICATION_JSON_TYPE))
 
         then: "account number for both should be different"
-        def responseJson1 = response1.readEntity(Map)
-        def responseJson2 = response2.readEntity(Map)
+        def responseJson1 = response1.readEntity(Integer)
+        def responseJson2 = response2.readEntity(Integer)
 
         response1.status == OK.statusCode
         response2.status == OK.statusCode
-        responseJson1.accountNumber != responseJson2.accountNumber
+        responseJson1 != responseJson2
     }
 }

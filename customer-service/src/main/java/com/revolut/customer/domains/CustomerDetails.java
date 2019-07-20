@@ -5,13 +5,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CustomerDetails {
 
-    @JsonProperty("firstName")
+    @JsonProperty(value = "firstName", access = JsonProperty.Access.READ_WRITE)
     private String firstName;
 
-    @JsonProperty("lastName")
+    @JsonProperty(value = "lastName", access = JsonProperty.Access.READ_WRITE)
     private String lastName;
 
-    @JsonProperty("username")
+    @JsonProperty(value = "username", access = JsonProperty.Access.READ_WRITE)
     private String username;
 
     public String getFirstName() {
@@ -25,7 +25,9 @@ public class CustomerDetails {
     public String getUsername() {
         return username;
     }
-
+    public String getUserName() {
+        return this.username;
+    }
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
