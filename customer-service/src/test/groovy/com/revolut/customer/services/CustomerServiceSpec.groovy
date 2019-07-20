@@ -4,6 +4,8 @@ import com.revolut.customer.domains.CustomerDetails
 import com.revolut.customer.storages.AccountStorage
 import spock.lang.Specification
 
+import javax.ws.rs.NotFoundException
+
 class CustomerServiceSpec extends Specification {
 
     AccountStorage storage
@@ -40,7 +42,7 @@ class CustomerServiceSpec extends Specification {
         accountNumber1 != accountNumber2
     }
 
-    def "getAccountDetails() should except if username with same username is added"() {
+    def "createAccount() should except if username with same username is added"() {
         given:
         def username = "batman"
         def firstName = "bat"
@@ -48,12 +50,33 @@ class CustomerServiceSpec extends Specification {
         def details2 = new CustomerDetails(username: username, firstName: firstName, lastName: "man")
 
         when:
-        def accountNumber1 = service.createAccount(details1)
-        def accountNumber2 = service.createAccount(details2)
+        service.createAccount(details1)
+        service.createAccount(details2)
 
         then:
         thrown RuntimeException
     }
 
+    def "getAccountDetails() should return customer details for an account number"() {
+        given:
+        def username = "batman"
+        def firstName = "bat"
+        def details = new CustomerDetails(username: username, firstName: firstName, lastName: "man")
+        def accountNumber = service.createAccount(details)
+
+        when:
+        def accountDetails = service.getAccountDetails(accountNumber)
+
+        then:
+        accountDetails == details
+    }
+
+    def "getAccountDetails() should throw not found exception if customer doesn't exists with provided account number"() {
+        when:
+        service.getAccountDetails(0000)
+
+        then:
+        thrown NotFoundException
+    }
 
 }

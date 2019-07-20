@@ -14,6 +14,10 @@ public class CustomerAccountDetails {
         return accountNumber;
     }
 
+    public CustomerDetails getCustomerDetails() {
+        return customerDetails;
+    }
+
     @Override
     public boolean equals(Object o) {
         return accountNumber == ((CustomerAccountDetails) o).accountNumber;

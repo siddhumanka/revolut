@@ -4,6 +4,8 @@ import com.revolut.customer.domains.CustomerAccountDetails;
 import com.revolut.customer.domains.CustomerDetails;
 import com.revolut.customer.storages.AccountStorage;
 
+import javax.ws.rs.NotFoundException;
+
 public class CustomerService {
     private final AccountStorage storage;
 
@@ -19,4 +21,10 @@ public class CustomerService {
         throw new RuntimeException();
     }
 
+    public CustomerDetails getAccountDetails(int accountNumber) throws Throwable {
+        return storage.getCustomerDetailsByAccountNumber(accountNumber).map(CustomerAccountDetails::getCustomerDetails)
+                .orElseThrow(() -> {
+                    throw new NotFoundException();
+                });
+    }
 }
