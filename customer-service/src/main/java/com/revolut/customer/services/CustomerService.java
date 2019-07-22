@@ -1,7 +1,8 @@
 package com.revolut.customer.services;
 
-import com.revolut.customer.domains.CustomerAccountDetails;
-import com.revolut.customer.domains.CustomerDetails;
+import com.revolut.customer.domains.CustomerBankAccountDetails;
+import com.revolut.customer.domains.requests.CustomerDetailsRequest;
+import com.revolut.customer.domains.responses.CustomerDetailsResponse;
 import com.revolut.customer.storages.AccountStorage;
 
 import javax.ws.rs.NotFoundException;
@@ -13,18 +14,23 @@ public class CustomerService {
         this.storage = storage;
     }
 
-    public int createAccount(CustomerDetails customerDetails) {
+    public int createAccount(CustomerDetailsRequest customerDetailsRequest) {
 
-        CustomerAccountDetails accountDetails = new CustomerAccountDetails(customerDetails, customerDetails.getUsername().hashCode());
+        CustomerBankAccountDetails accountDetails = new CustomerBankAccountDetails(customerDetailsRequest, customerDetailsRequest.getUsername().hashCode());
         if (storage.addCustomerAccountDetails(accountDetails))
             return accountDetails.getAccountNumber();
         throw new RuntimeException();
     }
 
-    public CustomerDetails getAccountDetails(int accountNumber) throws Throwable {
-        return storage.getCustomerDetailsByAccountNumber(accountNumber).map(CustomerAccountDetails::getCustomerDetails)
-                .orElseThrow(() -> {
-                    throw new NotFoundException();
-                });
+    public CustomerDetailsResponse getAccountDetails(int accountNumber) throws Throwable {
+        return storage.getCustomerDetailsByAccountNumber(accountNumber).map(customerBankAccountDetails ->
+                new CustomerDetailsResponse()
+                        .withFirstName(customerBankAccountDetails.getCustomerPersonalDetails().getFirstName())
+                        .withLastName(customerBankAccountDetails.getCustomerPersonalDetails().getLastName())
+                        .withUserName(customerBankAccountDetails.getCustomerPersonalDetails().getUsername())
+                        .withTotalBalance(customerBankAccountDetails.getTotalBalance())
+        ).orElseThrow(() -> {
+            throw new NotFoundException();
+        });
     }
 }

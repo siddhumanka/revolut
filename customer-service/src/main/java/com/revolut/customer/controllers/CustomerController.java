@@ -1,6 +1,7 @@
 package com.revolut.customer.controllers;
 
-import com.revolut.customer.domains.CustomerDetails;
+import com.revolut.customer.domains.requests.CustomerDetailsRequest;
+import com.revolut.customer.domains.responses.CustomerDetailsResponse;
 import com.revolut.customer.services.CustomerService;
 
 import javax.ws.rs.*;
@@ -20,16 +21,16 @@ public class CustomerController {
     @POST
     @Consumes(APPLICATION_JSON)
     @Produces(APPLICATION_JSON)
-    public Response addCustomer(CustomerDetails customerDetails) {
-        int accountNumber = customerService.createAccount(customerDetails);
+    public Response addCustomer(CustomerDetailsRequest customerDetailsRequest) {
+        int accountNumber = customerService.createAccount(customerDetailsRequest);
         return Response.ok(accountNumber).build();
     }
 
     @GET
     @Path("{accountNumber}")
     @Produces(APPLICATION_JSON)
-    public Response getCustomerDetails(@PathParam("accountNumber") int accountNumber, CustomerDetails customerDetails) throws Throwable {
-        CustomerDetails details = customerService.getAccountDetails(accountNumber);
+    public Response getCustomerDetails(@PathParam("accountNumber") int accountNumber, CustomerDetailsRequest customerDetailsRequest) throws Throwable {
+        CustomerDetailsResponse details = customerService.getAccountDetails(accountNumber);
         return Response.ok(details).build();
     }
 }

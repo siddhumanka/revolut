@@ -4,7 +4,9 @@ package com.revolut.customer;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.revolut.customer.controllers.CustomerController;
 import com.revolut.customer.controllers.HelloWorldController;
+import com.revolut.customer.controllers.TransactionController;
 import com.revolut.customer.services.CustomerService;
+import com.revolut.customer.services.TransactionService;
 import com.revolut.customer.storages.AccountStorage;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
@@ -31,8 +33,12 @@ public class Main extends Application<Configuration> {
         LOGGER.info("Registering REST resources");
         AccountStorage storage = new AccountStorage();
         CustomerService customerService = new CustomerService(storage);
+        TransactionService transactionService = new TransactionService(storage);
+
         environment.jersey().register(customerService);
+        environment.jersey().register(transactionService);
         environment.jersey().register(new CustomerController(customerService));
+        environment.jersey().register(new TransactionController(transactionService));
         environment.jersey().register(new HelloWorldController());
     }
 }

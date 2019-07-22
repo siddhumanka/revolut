@@ -1,9 +1,9 @@
-package com.revolut.customer.domains;
+package com.revolut.customer.domains.responses;
 
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class CustomerDetails {
+public class CustomerDetailsResponse {
 
     @JsonProperty(value = "firstName", access = JsonProperty.Access.READ_WRITE)
     private String firstName;
@@ -13,6 +13,9 @@ public class CustomerDetails {
 
     @JsonProperty(value = "username", access = JsonProperty.Access.READ_WRITE)
     private String username;
+
+    @JsonProperty(value = "totalBalance", access = JsonProperty.Access.READ_WRITE)
+    private int totalBalance;
 
     public String getFirstName() {
         return firstName;
@@ -25,18 +28,29 @@ public class CustomerDetails {
     public String getUsername() {
         return username;
     }
-    public String getUserName() {
-        return this.username;
+
+    public int getTotalBalance() {
+        return totalBalance;
     }
-    public void setFirstName(String firstName) {
+
+    public CustomerDetailsResponse withFirstName(String firstName) {
         this.firstName = firstName;
+        return this;
     }
 
-    public void setLastName(String lastName) {
+    public CustomerDetailsResponse withLastName(String lastName) {
         this.lastName = lastName;
+        return this;
     }
 
-    public void setUsername(String username) {
+    public CustomerDetailsResponse withUserName(String username) {
         this.username = username;
+        return this;
     }
+
+    public CustomerDetailsResponse withTotalBalance(int totalBalance) {
+        this.totalBalance = totalBalance;
+        return this;
+    }
+
 }

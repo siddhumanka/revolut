@@ -14,12 +14,8 @@ repositories {
     mavenCentral()
 }
 
-plugins{
-    compile ':cache:1.1.7'
-}
-
 run {
-    args 'server', configPath + 'application.yml'
+    args 'server', configPath + 'application-customer.yml'
 }
 
 dependencies {

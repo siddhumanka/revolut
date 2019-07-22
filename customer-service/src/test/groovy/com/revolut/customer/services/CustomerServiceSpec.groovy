@@ -1,6 +1,6 @@
 package com.revolut.customer.services
 
-import com.revolut.customer.domains.CustomerDetails
+import com.revolut.customer.domains.requests.CustomerDetailsRequest
 import com.revolut.customer.storages.AccountStorage
 import spock.lang.Specification
 
@@ -18,7 +18,7 @@ class CustomerServiceSpec extends Specification {
 
     def "createAccount() should return a account number for a customer"() {
         given:
-        def details = new CustomerDetails(username: "batman", firstName: "bat", lastName: "man")
+        def details = new CustomerDetailsRequest(username: "batman", firstName: "bat", lastName: "man")
 
         when:
         def accountNumber = service.createAccount(details)
@@ -29,8 +29,8 @@ class CustomerServiceSpec extends Specification {
 
     def "createAccount() should return different account number for different customer"() {
         given:
-        def details1 = new CustomerDetails(username: "batman", firstName: "bat", lastName: "man")
-        def details2 = new CustomerDetails(username: "superman", firstName: "super", lastName: "man")
+        def details1 = new CustomerDetailsRequest(username: "batman", firstName: "bat", lastName: "man")
+        def details2 = new CustomerDetailsRequest(username: "superman", firstName: "super", lastName: "man")
 
         when:
         def accountNumber1 = service.createAccount(details1)
@@ -46,8 +46,8 @@ class CustomerServiceSpec extends Specification {
         given:
         def username = "batman"
         def firstName = "bat"
-        def details1 = new CustomerDetails(username: username, firstName: firstName, lastName: "man")
-        def details2 = new CustomerDetails(username: username, firstName: firstName, lastName: "man")
+        def details1 = new CustomerDetailsRequest(username: username, firstName: firstName, lastName: "man")
+        def details2 = new CustomerDetailsRequest(username: username, firstName: firstName, lastName: "man")
 
         when:
         service.createAccount(details1)
@@ -61,14 +61,17 @@ class CustomerServiceSpec extends Specification {
         given:
         def username = "batman"
         def firstName = "bat"
-        def details = new CustomerDetails(username: username, firstName: firstName, lastName: "man")
+        def details = new CustomerDetailsRequest(username: username, firstName: firstName, lastName: "man")
         def accountNumber = service.createAccount(details)
 
         when:
         def accountDetails = service.getAccountDetails(accountNumber)
 
         then:
-        accountDetails == details
+        accountDetails.username == details.username
+        accountDetails.firstName == details.firstName
+        accountDetails.lastName == details.lastName
+        accountDetails.totalBalance == 0
     }
 
     def "getAccountDetails() should throw not found exception if customer doesn't exists with provided account number"() {
