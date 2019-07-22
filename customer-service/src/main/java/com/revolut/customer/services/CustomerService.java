@@ -5,6 +5,7 @@ import com.revolut.customer.domains.requests.CustomerDetailsRequest;
 import com.revolut.customer.domains.responses.CustomerDetailsResponse;
 import com.revolut.customer.storages.AccountStorage;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 public class CustomerService {
@@ -19,7 +20,7 @@ public class CustomerService {
         CustomerBankAccountDetails accountDetails = new CustomerBankAccountDetails(customerDetailsRequest, customerDetailsRequest.getUsername().hashCode());
         if (storage.addCustomerAccountDetails(accountDetails))
             return accountDetails.getAccountNumber();
-        throw new RuntimeException();
+        throw new BadRequestException();
     }
 
     public CustomerDetailsResponse getAccountDetails(int accountNumber) throws Throwable {
@@ -30,7 +31,7 @@ public class CustomerService {
                         .withUserName(customerBankAccountDetails.getCustomerPersonalDetails().getUsername())
                         .withTotalBalance(customerBankAccountDetails.getTotalBalance())
         ).orElseThrow(() -> {
-            throw new NotFoundException();
+            throw new NotFoundException("Customer with account number " + accountNumber + "not found.");
         });
     }
 }

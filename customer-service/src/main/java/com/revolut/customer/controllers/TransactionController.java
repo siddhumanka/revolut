@@ -27,4 +27,12 @@ public class TransactionController {
         return Response.ok().build();
     }
 
+    @GET
+    @Path("debit/{accountNumber}/{amount}")
+    @Produces(APPLICATION_JSON)
+    public Response debitAmount(@PathParam("accountNumber") int accountNumber, @PathParam("amount") int amount) {
+        transactionService.debitAmountFromAccount(amount, accountNumber);
+        return Response.ok().build();
+    }
+
 }

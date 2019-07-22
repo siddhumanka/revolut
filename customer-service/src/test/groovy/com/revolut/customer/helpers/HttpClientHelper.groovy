@@ -14,11 +14,15 @@ class HttpClientHelper {
                 .post(entity([firstName: firstName, lastName: lastName, username: username], APPLICATION_JSON_TYPE))
     }
 
-
     static Response getAccountDetails(accountNumber, target) {
         return target.path("/account/${accountNumber}")
                 .request(APPLICATION_JSON_TYPE)
                 .get()
     }
 
+    static Response creditMoneyInAccount(accountNumber, amount, target) {
+        target.path("/credit/${accountNumber}/${amount}")
+                .request(APPLICATION_JSON_TYPE)
+                .get()
+    }
 }
