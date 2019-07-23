@@ -11,4 +11,11 @@ public class PaymentRequest {
     @JsonProperty(value = "payeeAccountNumber", access = JsonProperty.Access.READ_WRITE)
     private int payeeAccountNumber;
 
+    public int getPayerAccountNumber() {
+        return payerAccountNumber;
+    }
+
+    public int getPayeeAccountNumber() {
+        return payeeAccountNumber;
+    }
 }
