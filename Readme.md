@@ -51,7 +51,7 @@ POST http://localhost:9002/pay/{amount}
     }
 ```
 
-- Run end-to-end tests using ()
+- Run end-to-end tests using different terminal
 ```
 ./gradlew :e2e-tests:test
 ```
