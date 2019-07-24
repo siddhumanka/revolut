@@ -1,4 +1,5 @@
 rootProject.name = 'revolut'
 include 'customer-service'
 include 'payment-service'
+include 'e2e-tests'
 
