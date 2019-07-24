@@ -3,6 +3,7 @@ package com.revolut.customer.clients;
 import com.revolut.customer.configs.CustomerServiceFactory;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.core.Response;
 
 public class CustomerServiceClient {
 
@@ -14,9 +15,9 @@ public class CustomerServiceClient {
         this.customerServiceFactory = customerServiceFactory;
     }
 
-    public void debitFromAccount(int amount, int payerAccountNumber) {
+    public Response debitFromAccount(int amount, int payerAccountNumber) {
         String debitPath = customerServiceFactory.getBaseUrl() + customerServiceFactory.getDebitPath();
-        client.target(debitPath + "/" + payerAccountNumber + "/" + amount)
+        return client.target(debitPath + "/" + payerAccountNumber + "/" + amount)
                 .request()
                 .get();
     }
