@@ -4,17 +4,17 @@ import spock.lang.Specification
 
 class CustomerDetailsResponseSpec extends Specification {
 
-    def "withFieldName() should create the valid object or default null or 0"() {
+    def "build() should create the valid object or default null or 0"() {
         given:
         def firstName = "firstName"
         def lastName = "lastName"
         def totalBalance = 19
 
         when:
-        def response = new CustomerDetailsResponse()
+        def response = new CustomerDetailsResponse.CustomerDetailsResponseBuilder()
                 .withFirstName(firstName)
                 .withLastName(lastName)
-                .withTotalBalance(totalBalance)
+                .withTotalBalance(totalBalance).build()
 
         then:
         response.totalBalance == totalBalance

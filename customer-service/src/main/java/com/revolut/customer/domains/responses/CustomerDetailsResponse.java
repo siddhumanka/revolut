@@ -33,24 +33,31 @@ public class CustomerDetailsResponse {
         return totalBalance;
     }
 
-    public CustomerDetailsResponse withFirstName(String firstName) {
-        this.firstName = firstName;
-        return this;
-    }
+    public static class CustomerDetailsResponseBuilder {
+        private CustomerDetailsResponse customerDetailsResponse = new CustomerDetailsResponse();
 
-    public CustomerDetailsResponse withLastName(String lastName) {
-        this.lastName = lastName;
-        return this;
-    }
+        public CustomerDetailsResponseBuilder withFirstName(String firstName) {
+            this.customerDetailsResponse.firstName = firstName;
+            return this;
+        }
 
-    public CustomerDetailsResponse withUserName(String username) {
-        this.username = username;
-        return this;
-    }
+        public CustomerDetailsResponseBuilder withLastName(String lastName) {
+            this.customerDetailsResponse.lastName = lastName;
+            return this;
+        }
 
-    public CustomerDetailsResponse withTotalBalance(int totalBalance) {
-        this.totalBalance = totalBalance;
-        return this;
-    }
+        public CustomerDetailsResponseBuilder withUserName(String username) {
+            this.customerDetailsResponse.username = username;
+            return this;
+        }
 
+        public CustomerDetailsResponseBuilder withTotalBalance(int totalBalance) {
+            this.customerDetailsResponse.totalBalance = totalBalance;
+            return this;
+        }
+
+        public CustomerDetailsResponse build() {
+            return this.customerDetailsResponse;
+        }
+    }
 }

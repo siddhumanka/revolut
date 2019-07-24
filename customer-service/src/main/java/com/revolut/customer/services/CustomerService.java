@@ -25,11 +25,11 @@ public class CustomerService {
 
     public CustomerDetailsResponse getAccountDetails(int accountNumber) throws Throwable {
         return storage.getCustomerDetailsByAccountNumber(accountNumber).map(customerBankAccountDetails ->
-                new CustomerDetailsResponse()
+                new CustomerDetailsResponse.CustomerDetailsResponseBuilder()
                         .withFirstName(customerBankAccountDetails.getCustomerPersonalDetails().getFirstName())
                         .withLastName(customerBankAccountDetails.getCustomerPersonalDetails().getLastName())
                         .withUserName(customerBankAccountDetails.getCustomerPersonalDetails().getUsername())
-                        .withTotalBalance(customerBankAccountDetails.getTotalBalance())
+                        .withTotalBalance(customerBankAccountDetails.getTotalBalance()).build()
         ).orElseThrow(() -> {
             throw new NotFoundException("Customer with account number " + accountNumber + "not found.");
         });
