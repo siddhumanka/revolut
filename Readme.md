@@ -4,7 +4,7 @@ This is a simple and basic banking application which provides
 3. Get personal details and total balance using account number
 4. Transactions : 
     4.1 Send money to another using account number
-Start application by 
+- Start application by 
 ```
 Terminal-1 : $ ./gradlew :customer-service:run 
 Terminal-2 : $ ./gradlew :payment-service:run 
