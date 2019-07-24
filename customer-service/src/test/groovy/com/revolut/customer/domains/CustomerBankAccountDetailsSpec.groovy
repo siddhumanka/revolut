@@ -47,7 +47,7 @@ class CustomerBankAccountDetailsSpec extends Specification {
         accountDetails1.totalBalance == 0
     }
 
-    private CustomerBankAccountDetails createCustomerBankAccountDetailsFrom(details = null, accountNumber = 1) {
+    private static CustomerBankAccountDetails createCustomerBankAccountDetailsFrom(details = null, accountNumber = 1) {
         new CustomerBankAccountDetails(details, accountNumber)
     }
 }

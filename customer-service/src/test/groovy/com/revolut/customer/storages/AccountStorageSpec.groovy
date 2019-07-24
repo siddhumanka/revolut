@@ -2,7 +2,10 @@ package com.revolut.customer.storages
 
 import com.revolut.customer.domains.CustomerBankAccountDetails
 import com.revolut.customer.domains.requests.CustomerDetailsRequest
+import com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilder
 import spock.lang.Specification
+
+import static com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilder.buildRequest
 
 class AccountStorageSpec extends Specification {
 
@@ -36,8 +39,8 @@ class AccountStorageSpec extends Specification {
     def "getCustomerDetailsByAccountNumber() should return customer details for an account number"() {
         given:
         def storage = new AccountStorage()
-        def accountDetails1 = new CustomerBankAccountDetails(new CustomerDetailsRequest(lastName: "lastname", firstName: "firstname", username: "username1"), 123)
-        def accountDetails2 = new CustomerBankAccountDetails(new CustomerDetailsRequest(lastName: "lastname", firstName: "firstname", username: "username2"), 124)
+        def accountDetails1 = new CustomerBankAccountDetails(buildRequest(lastName: "lastname", firstName: "firstname", username: "username1"), 123)
+        def accountDetails2 = new CustomerBankAccountDetails(buildRequest(lastName: "lastname", firstName: "firstname", username: "username2"), 124)
         storage.addCustomerAccountDetails(accountDetails1)
         storage.addCustomerAccountDetails(accountDetails2)
 

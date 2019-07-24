@@ -25,6 +25,7 @@ public class CustomerDetailsRequest {
     public String getUsername() {
         return username;
     }
+
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }

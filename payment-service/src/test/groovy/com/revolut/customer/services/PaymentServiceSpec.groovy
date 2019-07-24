@@ -21,7 +21,7 @@ class PaymentServiceSpec extends Specification {
         service.payAmount(amount, new PaymentRequest(payeeAccountNumber: payee, payerAccountNumber: payer))
 
         then:
-        1 * client.debitFromAccount(amount, payer)
+        1 * client.debitFromAccount(amount, payer) >> Response.status(200).build()
         1 * client.creditInAccount(amount, payee)
     }
 

@@ -51,12 +51,12 @@ POST http://localhost:9002/pay/{amount}
     }
 ```
 
-- Run end-to-end tests using 
+- Run end-to-end tests using ()
 ```
 ./gradlew :e2e-tests:test
 ```
 
-- Run unit/functional tests using 
+- Run unit/functional tests using  (Turn off the applications or change ports in resources/test-config.yml)
 ```
 ./gradlew :customer-service:test :payment-service:test
 ```

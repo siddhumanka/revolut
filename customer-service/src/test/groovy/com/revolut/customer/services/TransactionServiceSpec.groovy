@@ -2,11 +2,15 @@ package com.revolut.customer.services
 
 import com.revolut.customer.domains.CustomerBankAccountDetails
 import com.revolut.customer.domains.requests.CustomerDetailsRequest
+import com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilder
 import com.revolut.customer.storages.AccountStorage
 import spock.lang.Specification
 
 import javax.ws.rs.ForbiddenException
 import javax.ws.rs.NotFoundException
+
+import static com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilder.buildRequest
+
 
 class TransactionServiceSpec extends Specification {
 
@@ -105,7 +109,7 @@ class TransactionServiceSpec extends Specification {
 
     private boolean addCustomerToStorage(AccountStorage storage, String firstName, String lastName, String username, int accountNumber) {
         storage.addCustomerAccountDetails(new CustomerBankAccountDetails(
-                new CustomerDetailsRequest(firstName: firstName, lastName: lastName, username: username),
+                buildRequest(firstName: firstName, lastName: lastName, username: username),
                 accountNumber))
     }
 

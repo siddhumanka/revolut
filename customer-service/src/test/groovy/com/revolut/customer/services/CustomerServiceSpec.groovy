@@ -1,11 +1,12 @@
 package com.revolut.customer.services
 
-import com.revolut.customer.domains.requests.CustomerDetailsRequest
 import com.revolut.customer.storages.AccountStorage
 import spock.lang.Specification
 
 import javax.ws.rs.BadRequestException
 import javax.ws.rs.NotFoundException
+
+import static com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilder.buildRequest
 
 class CustomerServiceSpec extends Specification {
 
@@ -19,7 +20,7 @@ class CustomerServiceSpec extends Specification {
 
     def "createAccount() should return a account number for a customer"() {
         given:
-        def details = createRequest()
+        def details = buildRequest()
 
         when:
         def accountNumber = service.createAccount(details)
@@ -28,14 +29,10 @@ class CustomerServiceSpec extends Specification {
         accountNumber != null
     }
 
-    private CustomerDetailsRequest createRequest(username = "batman", firstName = "bat", lastName = "man") {
-        new CustomerDetailsRequest(username: username, firstName: firstName, lastName: lastName)
-    }
-
     def "createAccount() should return different account number for different customer"() {
         given:
-        def details1 = createRequest()
-        def details2 = createRequest("superman", "super", "man")
+        def details1 = buildRequest()
+        def details2 = buildRequest("superman", "super", "man")
 
         when:
         def accountNumber1 = service.createAccount(details1)
@@ -49,8 +46,8 @@ class CustomerServiceSpec extends Specification {
 
     def "createAccount() should except if username with same username is added"() {
         given:
-        def details1 = createRequest()
-        def details2 = createRequest()
+        def details1 = buildRequest()
+        def details2 = buildRequest()
 
         when:
         service.createAccount(details1)
@@ -62,7 +59,7 @@ class CustomerServiceSpec extends Specification {
 
     def "getAccountDetails() should return customer details for an account number"() {
         given:
-        def details = createRequest()
+        def details = buildRequest()
         def accountNumber = service.createAccount(details)
 
         when:

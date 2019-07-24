@@ -28,7 +28,7 @@ public class TransactionService {
             CustomerBankAccountDetails details = storage.getCustomerDetailsByAccountNumber(accountNumber).get();
             int totalBalance = details.getTotalBalance();
             if ((totalBalance - amount) < 0) {
-                throw new ForbiddenException("Not enough balance please credit atleast " + (amount - totalBalance) + " amount of money.");
+                throw new ForbiddenException("Not enough balance please credit at least " + (amount - totalBalance) + " amount of money.");
             } else details.setTotalBalance(totalBalance - amount);
         } else
             throw new NotFoundException("Customer with account number " + accountNumber + " not found.");
