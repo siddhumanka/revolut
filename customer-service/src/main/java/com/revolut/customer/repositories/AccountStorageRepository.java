@@ -5,7 +5,7 @@ import com.revolut.customer.domains.CustomerBankAccountDetails;
 import java.util.Optional;
 import java.util.Set;
 
-public class AccountStorageRepository {
+public class AccountStorageRepository implements Repository {
     private final Set<CustomerBankAccountDetails> accounts;
 
     public AccountStorageRepository(Set<CustomerBankAccountDetails> accounts) {
@@ -16,10 +16,12 @@ public class AccountStorageRepository {
         return accounts;
     }
 
+    @Override
     public boolean addCustomerAccountDetails(CustomerBankAccountDetails customerBankAccountDetails) {
         return accounts.add(customerBankAccountDetails);
     }
 
+    @Override
     public Optional<CustomerBankAccountDetails> getCustomerDetailsByAccountNumber(int accountNumber) {
         return accounts.stream().filter(details -> details.getAccountNumber() == accountNumber).findFirst();
     }

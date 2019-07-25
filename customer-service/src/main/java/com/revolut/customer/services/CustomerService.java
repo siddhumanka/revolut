@@ -3,28 +3,28 @@ package com.revolut.customer.services;
 import com.revolut.customer.domains.CustomerBankAccountDetails;
 import com.revolut.customer.domains.requests.CustomerDetailsRequest;
 import com.revolut.customer.domains.responses.CustomerDetailsResponse;
-import com.revolut.customer.repositories.AccountStorageRepository;
+import com.revolut.customer.repositories.Repository;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 public class CustomerService {
-    private final AccountStorageRepository storage;
+    private final Repository repository;
 
-    public CustomerService(AccountStorageRepository storage) {
-        this.storage = storage;
+    public CustomerService(Repository repository) {
+        this.repository = repository;
     }
 
     public int createAccount(CustomerDetailsRequest customerDetailsRequest) {
 
         CustomerBankAccountDetails accountDetails = new CustomerBankAccountDetails(customerDetailsRequest, customerDetailsRequest.getUsername().hashCode());
-        if (storage.addCustomerAccountDetails(accountDetails))
+        if (repository.addCustomerAccountDetails(accountDetails))
             return accountDetails.getAccountNumber();
         throw new BadRequestException();
     }
 
     public CustomerDetailsResponse getAccountDetails(int accountNumber) throws Throwable {
-        return storage.getCustomerDetailsByAccountNumber(accountNumber).map(customerBankAccountDetails ->
+        return repository.getCustomerDetailsByAccountNumber(accountNumber).map(customerBankAccountDetails ->
                 new CustomerDetailsResponse.CustomerDetailsResponseBuilder()
                         .withFirstName(customerBankAccountDetails.getCustomerPersonalDetails().getFirstName())
                         .withLastName(customerBankAccountDetails.getCustomerPersonalDetails().getLastName())

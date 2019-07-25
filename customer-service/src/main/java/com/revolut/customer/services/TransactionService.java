@@ -2,21 +2,21 @@ package com.revolut.customer.services;
 
 
 import com.revolut.customer.domains.CustomerBankAccountDetails;
-import com.revolut.customer.repositories.AccountStorageRepository;
+import com.revolut.customer.repositories.Repository;
 
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 
 public class TransactionService {
-    private final AccountStorageRepository storage;
+    private final Repository repository;
 
-    public TransactionService(AccountStorageRepository storage) {
-        this.storage = storage;
+    public TransactionService(Repository repository) {
+        this.repository = repository;
     }
 
     public void creditAmountInAccount(int amount, int accountNumber) {
-        if (storage.getCustomerDetailsByAccountNumber(accountNumber).isPresent()) {
-            CustomerBankAccountDetails details = storage.getCustomerDetailsByAccountNumber(accountNumber).get();
+        if (repository.getCustomerDetailsByAccountNumber(accountNumber).isPresent()) {
+            CustomerBankAccountDetails details = repository.getCustomerDetailsByAccountNumber(accountNumber).get();
             int totalBalance = details.getTotalBalance();
             details.setTotalBalance(totalBalance + amount);
         } else
@@ -24,8 +24,8 @@ public class TransactionService {
     }
 
     public void debitAmountFromAccount(int amount, int accountNumber) {
-        if (storage.getCustomerDetailsByAccountNumber(accountNumber).isPresent()) {
-            CustomerBankAccountDetails details = storage.getCustomerDetailsByAccountNumber(accountNumber).get();
+        if (repository.getCustomerDetailsByAccountNumber(accountNumber).isPresent()) {
+            CustomerBankAccountDetails details = repository.getCustomerDetailsByAccountNumber(accountNumber).get();
             int totalBalance = details.getTotalBalance();
             if ((totalBalance - amount) < 0) {
                 throw new ForbiddenException("Not enough balance please credit at least " + (amount - totalBalance) + " amount of money.");

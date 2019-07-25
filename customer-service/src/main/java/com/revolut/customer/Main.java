@@ -6,6 +6,7 @@ import com.revolut.customer.controllers.CustomerController;
 import com.revolut.customer.controllers.HelloWorldController;
 import com.revolut.customer.controllers.TransactionController;
 import com.revolut.customer.domains.CustomerBankAccountDetails;
+import com.revolut.customer.repositories.Repository;
 import com.revolut.customer.services.CustomerService;
 import com.revolut.customer.services.TransactionService;
 import com.revolut.customer.repositories.AccountStorageRepository;
@@ -36,9 +37,9 @@ public class Main extends Application<Configuration> {
     public void run(Configuration configuration, Environment environment) throws Exception {
         LOGGER.info("Registering REST resources");
         Set<CustomerBankAccountDetails> inMemoryDb = new HashSet<>();
-        AccountStorageRepository storage = new AccountStorageRepository(inMemoryDb);
-        CustomerService customerService = new CustomerService(storage);
-        TransactionService transactionService = new TransactionService(storage);
+        Repository repository = new AccountStorageRepository(inMemoryDb);
+        CustomerService customerService = new CustomerService(repository);
+        TransactionService transactionService = new TransactionService(repository);
 
         environment.jersey().register(customerService);
         environment.jersey().register(transactionService);
