@@ -1,9 +1,7 @@
 package com.revolut.customer.services
 
 import com.revolut.customer.domains.CustomerBankAccountDetails
-import com.revolut.customer.domains.requests.CustomerDetailsRequest
-import com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilder
-import com.revolut.customer.storages.AccountStorage
+import com.revolut.customer.repositories.AccountStorageRepository
 import spock.lang.Specification
 
 import javax.ws.rs.ForbiddenException
@@ -14,7 +12,7 @@ import static com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilde
 
 class TransactionServiceSpec extends Specification {
 
-    AccountStorage storage
+    AccountStorageRepository storageRepository
     TransactionService service
     String username
     int accountNumber
@@ -27,9 +25,10 @@ class TransactionServiceSpec extends Specification {
         lastName = "lastName"
         firstName = "firstName"
 
-        storage = new AccountStorage()
-        addCustomerToStorage(storage, firstName, lastName, username, accountNumber)
-        service = new TransactionService(storage)
+        def set = new HashSet<CustomerBankAccountDetails>()
+        storageRepository = new AccountStorageRepository(set)
+        addCustomerToStorage(storageRepository, firstName, lastName, username, accountNumber)
+        service = new TransactionService(storageRepository)
     }
 
     def "creditAmountInAccount() should add money into the customer's account"() {
@@ -40,7 +39,7 @@ class TransactionServiceSpec extends Specification {
         service.creditAmountInAccount(amount, accountNumber)
 
         then:
-        def totalBalance = storage.getCustomerDetailsByAccountNumber(accountNumber).get().totalBalance
+        def totalBalance = storageRepository.getCustomerDetailsByAccountNumber(accountNumber).get().totalBalance
         totalBalance == amount
     }
 
@@ -55,7 +54,7 @@ class TransactionServiceSpec extends Specification {
         service.creditAmountInAccount(amount2, accountNumber)
 
         then:
-        def totalBalance = storage.getCustomerDetailsByAccountNumber(accountNumber).get().totalBalance
+        def totalBalance = storageRepository.getCustomerDetailsByAccountNumber(accountNumber).get().totalBalance
         totalBalance == amount1 + amount2
     }
 
@@ -78,7 +77,7 @@ class TransactionServiceSpec extends Specification {
         service.debitAmountFromAccount(amount2, accountNumber)
 
         then:
-        def totalBalance = storage.getCustomerDetailsByAccountNumber(accountNumber).get().totalBalance
+        def totalBalance = storageRepository.getCustomerDetailsByAccountNumber(accountNumber).get().totalBalance
         totalBalance == amount1 - amount2
     }
 
@@ -107,7 +106,7 @@ class TransactionServiceSpec extends Specification {
     }
 
 
-    private boolean addCustomerToStorage(AccountStorage storage, String firstName, String lastName, String username, int accountNumber) {
+    private boolean addCustomerToStorage(AccountStorageRepository storage, String firstName, String lastName, String username, int accountNumber) {
         storage.addCustomerAccountDetails(new CustomerBankAccountDetails(
                 buildRequest(firstName: firstName, lastName: lastName, username: username),
                 accountNumber))

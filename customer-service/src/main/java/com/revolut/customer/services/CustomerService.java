@@ -3,15 +3,15 @@ package com.revolut.customer.services;
 import com.revolut.customer.domains.CustomerBankAccountDetails;
 import com.revolut.customer.domains.requests.CustomerDetailsRequest;
 import com.revolut.customer.domains.responses.CustomerDetailsResponse;
-import com.revolut.customer.storages.AccountStorage;
+import com.revolut.customer.repositories.AccountStorageRepository;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.NotFoundException;
 
 public class CustomerService {
-    private final AccountStorage storage;
+    private final AccountStorageRepository storage;
 
-    public CustomerService(AccountStorage storage) {
+    public CustomerService(AccountStorageRepository storage) {
         this.storage = storage;
     }
 

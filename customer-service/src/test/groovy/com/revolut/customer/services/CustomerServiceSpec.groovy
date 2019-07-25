@@ -1,6 +1,7 @@
 package com.revolut.customer.services
 
-import com.revolut.customer.storages.AccountStorage
+import com.revolut.customer.domains.CustomerBankAccountDetails
+import com.revolut.customer.repositories.AccountStorageRepository
 import spock.lang.Specification
 
 import javax.ws.rs.BadRequestException
@@ -10,12 +11,14 @@ import static com.revolut.customer.helpers.builders.CustomerDetailsRequestBuilde
 
 class CustomerServiceSpec extends Specification {
 
-    AccountStorage storage
+    AccountStorageRepository storageRepository
     CustomerService service
 
     void setup() {
-        storage = new AccountStorage()
-        service = new CustomerService(storage)
+        def set = new HashSet<CustomerBankAccountDetails>()
+
+        storageRepository = new AccountStorageRepository(set)
+        service = new CustomerService(storageRepository)
     }
 
     def "createAccount() should return a account number for a customer"() {

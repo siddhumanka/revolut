@@ -2,15 +2,15 @@ package com.revolut.customer.services;
 
 
 import com.revolut.customer.domains.CustomerBankAccountDetails;
-import com.revolut.customer.storages.AccountStorage;
+import com.revolut.customer.repositories.AccountStorageRepository;
 
 import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.NotFoundException;
 
 public class TransactionService {
-    private final AccountStorage storage;
+    private final AccountStorageRepository storage;
 
-    public TransactionService(AccountStorage storage) {
+    public TransactionService(AccountStorageRepository storage) {
         this.storage = storage;
     }
 

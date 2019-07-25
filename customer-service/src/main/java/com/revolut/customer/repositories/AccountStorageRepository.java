@@ -1,20 +1,19 @@
-package com.revolut.customer.storages;
+package com.revolut.customer.repositories;
 
 import com.revolut.customer.domains.CustomerBankAccountDetails;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
-public class AccountStorage {
-    private final Set<CustomerBankAccountDetails> accounts = new HashSet<>();
+public class AccountStorageRepository {
+    private final Set<CustomerBankAccountDetails> accounts;
+
+    public AccountStorageRepository(Set<CustomerBankAccountDetails> accounts) {
+        this.accounts = accounts;
+    }
 
     public Set<CustomerBankAccountDetails> getAccounts() {
         return accounts;
-    }
-
-    public Set<CustomerBankAccountDetails> getStorage() {
-        return this.getAccounts();
     }
 
     public boolean addCustomerAccountDetails(CustomerBankAccountDetails customerBankAccountDetails) {

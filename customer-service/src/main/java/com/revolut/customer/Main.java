@@ -5,15 +5,19 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.revolut.customer.controllers.CustomerController;
 import com.revolut.customer.controllers.HelloWorldController;
 import com.revolut.customer.controllers.TransactionController;
+import com.revolut.customer.domains.CustomerBankAccountDetails;
 import com.revolut.customer.services.CustomerService;
 import com.revolut.customer.services.TransactionService;
-import com.revolut.customer.storages.AccountStorage;
+import com.revolut.customer.repositories.AccountStorageRepository;
 import io.dropwizard.Application;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class Main extends Application<Configuration> {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -31,7 +35,8 @@ public class Main extends Application<Configuration> {
     @Override
     public void run(Configuration configuration, Environment environment) throws Exception {
         LOGGER.info("Registering REST resources");
-        AccountStorage storage = new AccountStorage();
+        Set<CustomerBankAccountDetails> inMemoryDb = new HashSet<>();
+        AccountStorageRepository storage = new AccountStorageRepository(inMemoryDb);
         CustomerService customerService = new CustomerService(storage);
         TransactionService transactionService = new TransactionService(storage);
 
