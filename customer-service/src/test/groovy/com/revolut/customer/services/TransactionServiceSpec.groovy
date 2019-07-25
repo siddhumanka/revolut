@@ -106,7 +106,7 @@ class TransactionServiceSpec extends Specification {
     }
 
 
-    private boolean addCustomerToStorage(AccountStorageRepository storage, String firstName, String lastName, String username, int accountNumber) {
+    static boolean addCustomerToStorage(AccountStorageRepository storage, String firstName, String lastName, String username, int accountNumber) {
         storage.addCustomerAccountDetails(new CustomerBankAccountDetails(
                 buildRequest(firstName: firstName, lastName: lastName, username: username),
                 accountNumber))

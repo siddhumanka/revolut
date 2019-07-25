@@ -24,14 +24,18 @@ public class CustomerService {
     }
 
     public CustomerDetailsResponse getAccountDetails(int accountNumber) throws Throwable {
-        return repository.getCustomerDetailsByAccountNumber(accountNumber).map(customerBankAccountDetails ->
-                new CustomerDetailsResponse.CustomerDetailsResponseBuilder()
-                        .withFirstName(customerBankAccountDetails.getCustomerPersonalDetails().getFirstName())
-                        .withLastName(customerBankAccountDetails.getCustomerPersonalDetails().getLastName())
-                        .withUserName(customerBankAccountDetails.getCustomerPersonalDetails().getUsername())
-                        .withTotalBalance(customerBankAccountDetails.getTotalBalance()).build()
-        ).orElseThrow(() -> {
-            throw new NotFoundException("Customer with account number " + accountNumber + "not found.");
-        });
+        return repository.getCustomerDetailsByAccountNumber(accountNumber)
+                .map(this::mapAccountDetailsToResponse)
+                .orElseThrow(() -> {
+                    throw new NotFoundException("Customer with account number " + accountNumber + "not found.");
+                });
+    }
+
+    private CustomerDetailsResponse mapAccountDetailsToResponse(CustomerBankAccountDetails customerBankAccountDetails) {
+        return new CustomerDetailsResponse.CustomerDetailsResponseBuilder()
+                .withFirstName(customerBankAccountDetails.getCustomerPersonalDetails().getFirstName())
+                .withLastName(customerBankAccountDetails.getCustomerPersonalDetails().getLastName())
+                .withUserName(customerBankAccountDetails.getCustomerPersonalDetails().getUsername())
+                .withTotalBalance(customerBankAccountDetails.getTotalBalance()).build();
     }
 }

@@ -38,6 +38,7 @@ public class Main extends Application<Configuration> {
         LOGGER.info("Registering REST resources");
         Set<CustomerBankAccountDetails> inMemoryDb = new HashSet<>();
         Repository repository = new AccountStorageRepository(inMemoryDb);
+
         CustomerService customerService = new CustomerService(repository);
         TransactionService transactionService = new TransactionService(repository);
 
