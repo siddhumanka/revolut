@@ -1,7 +1,9 @@
 package com.revolut.customer.controllers;
 
 import com.revolut.customer.domains.requests.CustomerDetailsRequest;
+import com.revolut.customer.domains.requests.SubscriptionRequest;
 import com.revolut.customer.domains.responses.CustomerDetailsResponse;
+import com.revolut.customer.domains.responses.Subscription;
 import com.revolut.customer.services.CustomerService;
 
 import javax.ws.rs.*;
@@ -33,4 +35,15 @@ public class CustomerController {
         CustomerDetailsResponse details = customerService.getAccountDetails(accountNumber);
         return Response.ok(details).build();
     }
+
+    @POST
+    @Path("/subscribe")
+    @Consumes(APPLICATION_JSON)
+    @Produces(APPLICATION_JSON)
+    public Response addSubscription(SubscriptionRequest subscriptionRequest) throws Throwable {
+        customerService.addSubscription(subscriptionRequest);
+        return Response.ok().build();
+    }
+
+
 }

@@ -13,6 +13,8 @@ import static com.revolut.customer.helpers.HttpClientHelper.createAccount
 import static com.revolut.customer.helpers.HttpClientHelper.getAccountDetails
 import static com.revolut.customer.helpers.TargetHelper.createTarget
 import static io.dropwizard.testing.ResourceHelpers.resourceFilePath
+import static javax.ws.rs.client.Entity.entity
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE
 import static javax.ws.rs.core.Response.Status.NOT_FOUND
 import static javax.ws.rs.core.Response.Status.OK
 
@@ -91,6 +93,8 @@ class CustomerControllerSpec extends Specification {
         responseJson2.firstName == firstName
         responseJson2.lastName == lastName
         responseJson2.username == username
+        responseJson2.containsKey("subscription")
+        responseJson2.subscription == null
     }
 
     def "GET /account/{accountNumber} should return 404 if customer not found"() {
@@ -103,4 +107,38 @@ class CustomerControllerSpec extends Specification {
         response2.status == NOT_FOUND.statusCode
     }
 
+
+    def "POST /account/subscribe should subscribe a customer to an subscription account number"() {
+        given: "An existing customer"
+        def firstName = "super"
+        def lastName = "boy"
+        def username = "superboy"
+
+        def response1 = createAccount(firstName, lastName, username, target)
+        def accountNumber = response1.readEntity(Integer)
+
+        println accountNumber
+        def subscriptionFirstName = "subscription"
+        def subscriptionLastName = "account"
+        def subscriptionUsername = "subscriptionaccount"
+
+        def subscriptionResponse1 = createAccount(subscriptionFirstName, subscriptionLastName, subscriptionUsername, target)
+        def subscriptionAccountNumber = subscriptionResponse1.readEntity(Integer)
+
+        when: "requesting subscription on an account"
+        def response2 = target.path("/account/subscribe")
+                .request(APPLICATION_JSON_TYPE)
+                .post(entity([customerAccountNumber: accountNumber, subscriptionAccountNumber: subscriptionAccountNumber, amount: "200", time: "21:02"], APPLICATION_JSON_TYPE))
+
+        then: "should return 200"
+        response2.status == 200
+
+        def response3 = getAccountDetails(accountNumber, target)
+        def responseJson3 = response3.readEntity(Map)
+
+        def subscriptionMap = responseJson3.subscription
+
+        subscriptionMap != null
+        subscriptionMap.accountNumber == subscriptionAccountNumber
+    }
 }

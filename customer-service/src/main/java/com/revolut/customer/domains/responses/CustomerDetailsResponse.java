@@ -17,6 +17,10 @@ public class CustomerDetailsResponse {
     @JsonProperty(value = "totalBalance", access = JsonProperty.Access.READ_WRITE)
     private int totalBalance;
 
+    @JsonProperty(value = "subscription", access = JsonProperty.Access.READ_WRITE)
+    //private Map<Integer, Subscription> subscriptionMap;
+    private Subscription subscription;
+
     public String getFirstName() {
         return firstName;
     }
@@ -31,6 +35,10 @@ public class CustomerDetailsResponse {
 
     public int getTotalBalance() {
         return totalBalance;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
     }
 
     public static class CustomerDetailsResponseBuilder {
@@ -53,6 +61,11 @@ public class CustomerDetailsResponse {
 
         public CustomerDetailsResponseBuilder withTotalBalance(int totalBalance) {
             this.customerDetailsResponse.totalBalance = totalBalance;
+            return this;
+        }
+
+        public CustomerDetailsResponseBuilder withSubscription(Subscription subscription) {
+            this.customerDetailsResponse.subscription = subscription;
             return this;
         }
 

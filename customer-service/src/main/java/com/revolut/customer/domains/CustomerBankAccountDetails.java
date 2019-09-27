@@ -1,17 +1,23 @@
 package com.revolut.customer.domains;
 
 import com.revolut.customer.domains.requests.CustomerDetailsRequest;
+import com.revolut.customer.domains.responses.Subscription;
 
 public class CustomerBankAccountDetails {
 
     private final CustomerDetailsRequest customerPersonalDetails;
     private final int accountNumber;
     private int totalBalance;
+    private Subscription subscription;
 
     public CustomerBankAccountDetails(CustomerDetailsRequest customerPersonalDetails, int accountNumber) {
         this.customerPersonalDetails = customerPersonalDetails;
         this.accountNumber = accountNumber;
         this.totalBalance = 0;
+    }
+
+    public void setSubscription(Subscription subscription) {
+        this.subscription = subscription;
     }
 
     public int getTotalBalance() {
@@ -24,6 +30,10 @@ public class CustomerBankAccountDetails {
 
     public int getAccountNumber() {
         return accountNumber;
+    }
+
+    public Subscription getSubscription() {
+        return subscription;
     }
 
     public CustomerDetailsRequest getCustomerPersonalDetails() {
@@ -39,4 +49,5 @@ public class CustomerBankAccountDetails {
     public int hashCode() {
         return accountNumber;
     }
+
 }
