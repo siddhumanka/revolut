@@ -1,6 +1,7 @@
 package com.revolut.customer.services
 
 import com.revolut.customer.domains.CustomerBankAccountDetails
+import com.revolut.customer.domains.requests.SubscriptionRequest
 import com.revolut.customer.repositories.AccountStorageRepository
 import spock.lang.Specification
 
@@ -79,8 +80,27 @@ class CustomerServiceSpec extends Specification {
         when:
         service.getAccountDetails(0000)
 
+
         then:
         thrown NotFoundException
+    }
+
+    def "addSubscription() should add subscription in given customer detail"() {
+        given:
+        def details = buildRequest()
+        def accountNumber = service.createAccount(details)
+        def subscriptionRequest = new SubscriptionRequest(customerAccountNumber: accountNumber, subscriptionAccountNumber: 123456789, amount: 200, time: "10:21")
+
+
+        when:
+        service.addSubscription(subscriptionRequest)
+
+        then:
+        def accountDetails = service.getAccountDetails(accountNumber)
+        accountDetails.subscription != null
+        accountDetails.subscription.accountNumber == 123456789
+        accountDetails.subscription.time == "10:21"
+        accountDetails.subscription.money == 200
     }
 
 }
